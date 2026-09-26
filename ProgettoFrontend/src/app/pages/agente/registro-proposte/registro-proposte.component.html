@@ -1,0 +1,45 @@
+<div class="container">
+
+  <h1>Registro proposte</h1>
+
+  <!-- Loader -->
+  @if (loading) {
+    <div class="spinner-wrapper">
+      <mat-spinner diameter="40"></mat-spinner>
+    </div>
+  }
+
+  <!-- Nessuna proposta -->
+  @if (!loading && registro.length === 0) {
+    <p class="empty">
+      Nessuna proposta nello storico.
+    </p>
+  }
+
+  <!-- ===================== PROPOSTE ACCETTATE ===================== -->
+  @if (!loading && proposteAccettate.length > 0) {
+    <h3 class="sottotitolo success">Proposte accettate</h3>
+
+    @for (p of proposteAccettate; track p.idProposta) {
+      <app-proposta-card
+        [proposta]="p"
+        variant="accettata"
+        [showDetails]="true">
+      </app-proposta-card>
+    }
+  }
+
+  <!-- ===================== PROPOSTE RIFIUTATE ===================== -->
+  @if (!loading && proposteRifiutate.length > 0) {
+    <h3 class="sottotitolo muted">Proposte rifiutate</h3>
+
+    @for (p of proposteRifiutate; track p.idProposta) {
+      <app-proposta-card
+        [proposta]="p"
+        variant="rifiutata"
+        [showDetails]="true">
+      </app-proposta-card>
+    }
+  }
+
+</div>

@@ -1,0 +1,938 @@
+/* =========================================================
+   Visualizza Inserzione — Modern Real Estate UI
+   Compatibile con classi del tuo template
+   ========================================================= */
+
+:host {
+  display: block;
+  overflow-x: hidden;
+
+  /* Design tokens */
+  --bg: #f6f8fc;
+  --surface: #ffffff;
+  --surface-2: rgba(255, 255, 255, 0.92);
+  --border: rgba(15, 23, 42, 0.10);
+  --border-2: rgba(15, 23, 42, 0.14);
+
+  --text: #0f172a;
+  --muted: #475569;
+
+  --primary: #2977a7;
+  --primary-2: #1f5a7d;
+
+  --success: #16a34a;
+  --danger: #dc2626;
+  --info: #0ea5e9;
+  --warn: #f59e0b;
+
+  --radius-xl: 22px;
+  --radius-lg: 18px;
+  --radius-md: 14px;
+  --radius-sm: 12px;
+
+  --shadow-1: 0 10px 28px rgba(15, 23, 42, 0.10);
+  --shadow-2: 0 20px 50px rgba(15, 23, 42, 0.12);
+}
+
+/* =========================================================
+   Loading
+   ========================================================= */
+.loading {
+  max-width: 1100px;
+  margin: 110px auto 0;
+  padding: 18px 16px;
+  color: var(--muted);
+  font-weight: 800;
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.86);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-1);
+}
+
+/* =========================================================
+   Page Wrapper
+   ========================================================= */
+.listing-page {
+  background:
+    radial-gradient(900px 520px at 15% 5%, rgba(41, 119, 167, 0.14), transparent 55%),
+    radial-gradient(800px 520px at 85% 15%, rgba(14, 165, 233, 0.10), transparent 55%),
+    linear-gradient(180deg, var(--bg), #ffffff);
+  min-height: 100vh;
+}
+
+/* =========================================================
+   Hero
+   ========================================================= */
+.hero {
+  width: 100%;
+  padding-top: 72px; /* spazio per navbar */
+}
+
+.hero-media {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 0 16px;
+  position: relative;
+}
+
+.hero-img {
+  width: 100%;
+  height: 420px;
+  object-fit: cover;
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-2);
+}
+
+.hero-badges {
+  position: absolute;
+  left: 30px;
+  bottom: 22px;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 999px;
+  font-weight: 900;
+  font-size: 12px;
+  color: #0b1b2b;
+  background: rgba(255, 255, 255, 0.90);
+  border: 1px solid var(--border);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 10px 18px rgba(15, 23, 42, 0.10);
+}
+
+.badge-soft {
+  color: #0f172a;
+  background: rgba(255, 255, 255, 0.78);
+}
+
+/* =========================================================
+   Container Inserzione
+   ========================================================= */
+.container-inserzione {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 18px 16px 44px;
+  font-family: "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+}
+
+/* =========================================================
+   Header Modern (titolo + prezzo)
+   ========================================================= */
+.header-modern {
+  display: flex;
+  justify-content: space-between;
+  gap: 18px;
+  align-items: flex-start;
+
+  margin: 18px 0 18px;
+  padding: 18px 18px;
+  border-radius: var(--radius-xl);
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-1);
+}
+
+.head-left .title {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 950;
+  letter-spacing: -0.3px;
+  color: var(--text);
+  line-height: 1.15;
+}
+
+.location {
+  margin: 10px 0 0;
+  color: var(--muted);
+  font-weight: 700;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.location .dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 999px;
+  background: var(--primary);
+  box-shadow: 0 0 0 4px rgba(41, 119, 167, 0.15);
+}
+
+.chips {
+  margin-top: 12px;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.chip {
+  padding: 8px 12px;
+  border-radius: 999px;
+  font-weight: 900;
+  font-size: 12px;
+  color: #0f172a;
+  background: rgba(41, 119, 167, 0.10);
+  border: 1px solid rgba(41, 119, 167, 0.18);
+}
+
+.head-right {
+  text-align: right;
+  min-width: 260px;
+}
+
+.prezzo-modern {
+  font-weight: 950;
+  font-size: 26px;
+  color: var(--text);
+  letter-spacing: -0.2px;
+}
+
+.hint-trattativa {
+  margin: 10px 0 0;
+  color: #7c2d12;
+  background: rgba(245, 158, 11, 0.14);
+  border: 1px solid rgba(245, 158, 11, 0.22);
+  padding: 10px 12px;
+  border-radius: var(--radius-md);
+  font-weight: 800;
+  font-size: 12px;
+}
+
+.hint-trattativa--box {
+  margin-top: 12px;
+}
+
+/* =========================================================
+   Layout (Main + Sidebar)
+   ========================================================= */
+.layout {
+  display: grid;
+  grid-template-columns: 1fr 360px;
+  gap: 18px;
+  align-items: start;
+  margin-top: 16px;
+}
+
+.main-col {
+  min-width: 0;
+}
+
+.side-col .sticky {
+  position: sticky;
+  top: 90px; /* sotto la navbar */
+}
+
+/* =========================================================
+   Cards generiche
+   ========================================================= */
+.section-card,
+.side-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-1);
+}
+
+.section-card {
+  padding: 16px;
+  margin-bottom: 14px;
+}
+
+.section-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.section-head h3 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 950;
+  color: var(--text);
+}
+
+.desc {
+  margin: 0;
+  color: var(--muted);
+  font-weight: 650;
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.address {
+  margin: 0 0 12px;
+  color: var(--muted);
+  font-weight: 800;
+  font-size: 13px;
+}
+
+iframe {
+  width: 100%;
+  height: 280px;
+  border-radius: var(--radius-lg);
+  box-shadow: 0 10px 22px rgba(15, 23, 42, 0.10);
+  border: 1px solid var(--border);
+}
+
+/* =========================================================
+   Dettagli grid
+   ========================================================= */
+.details-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px 12px;
+}
+
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 10px 12px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+  background: #fbfcff;
+}
+
+.detail-row .k {
+  color: var(--muted);
+  font-weight: 800;
+  font-size: 12px;
+}
+
+.detail-row .v {
+  color: var(--text);
+  font-weight: 950;
+  font-size: 12px;
+}
+
+/* =========================================================
+   Indicatori vicini
+   ========================================================= */
+.nearby {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+}
+
+.near-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 12px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+  background: #fbfcff;
+  font-weight: 800;
+  color: var(--text);
+}
+
+.near-item strong {
+  font-weight: 950;
+}
+
+/* =========================================================
+   Controproposta (alert)
+   ========================================================= */
+.alert-controproposta {
+  padding: 16px;
+  border-radius: var(--radius-xl);
+  border: 1px solid rgba(14, 165, 233, 0.25);
+  background: rgba(14, 165, 233, 0.10);
+  box-shadow: var(--shadow-1);
+  margin-bottom: 14px;
+}
+
+.alert-header {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.alert-header h3 {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 950;
+  color: #0b1b2b;
+}
+
+.alert-text,
+.alert-note,
+.alert-reminder {
+  margin: 10px 0 0;
+  color: #0b1b2b;
+  font-weight: 750;
+  font-size: 13px;
+}
+
+.alert-note {
+  background: rgba(255, 255, 255, 0.60);
+  border: 1px solid rgba(15, 23, 42, 0.10);
+  padding: 10px 12px;
+  border-radius: var(--radius-md);
+}
+
+.alert-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 12px;
+  flex-wrap: wrap;
+}
+
+.btn-accetta,
+.btn-rifiuta {
+  border: none;
+  padding: 10px 12px;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  font-weight: 950;
+  font-size: 13px;
+}
+
+.btn-accetta {
+  color: #ffffff;
+  background: linear-gradient(135deg, var(--success), #0f7a3a);
+  box-shadow: 0 12px 18px rgba(22, 163, 74, 0.18);
+}
+
+.btn-rifiuta {
+  color: #ffffff;
+  background: linear-gradient(135deg, var(--danger), #9f1239);
+  box-shadow: 0 12px 18px rgba(220, 38, 38, 0.18);
+}
+
+/* =========================================================
+   Sidebar
+   ========================================================= */
+.side-card {
+  padding: 16px;
+}
+
+.side-title {
+  margin: 0 0 8px;
+  font-size: 15px;
+  font-weight: 950;
+  color: var(--text);
+}
+
+.side-sub {
+  margin: 0 0 12px;
+  color: var(--muted);
+  font-weight: 700;
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+/* CTA buttons */
+.proposta-btn {
+  width: 100%;
+  border: none;
+  border-radius: var(--radius-md);
+  padding: 12px 14px;
+  cursor: pointer;
+  font-weight: 950;
+  font-size: 14px;
+  transition: transform .08s ease, filter .2s ease, opacity .2s ease;
+}
+
+.proposta-btn--full { width: 100%; }
+
+.proposta-btn:hover { transform: translateY(-1px); }
+.proposta-btn:active { transform: translateY(0px); }
+
+.proposta-btn {
+  color: #ffffff;
+  background: linear-gradient(135deg, var(--primary), var(--primary-2));
+  box-shadow: 0 14px 24px rgba(41, 119, 167, 0.18);
+}
+
+.proposta-btn:disabled {
+  opacity: 0.6;
+  cursor: default;
+  pointer-events: none;
+}
+
+.proposta-btn--login {
+  background: linear-gradient(135deg, #0f2a44, #143b66);
+  box-shadow: 0 14px 24px rgba(15, 42, 68, 0.18);
+}
+
+.proposta-btn.manuale {
+  background: linear-gradient(135deg, #111827, #334155);
+  box-shadow: 0 14px 24px rgba(15, 23, 42, 0.18);
+}
+
+/* =========================================================
+   Modal Offerta
+   ========================================================= */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(2, 6, 23, 0.55);
+  backdrop-filter: blur(6px);
+  z-index: 50;
+}
+
+.modal-card {
+  position: fixed;
+  z-index: 60;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+
+  width: min(520px, calc(100% - 32px));
+  background: rgba(255, 255, 255, 0.96);
+  border: 1px solid rgba(15, 23, 42, 0.12);
+  border-radius: var(--radius-xl);
+  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.35);
+  padding: 18px;
+}
+
+.modal-card h2 {
+  margin: 0 0 10px;
+  font-size: 18px;
+  font-weight: 950;
+  color: var(--text);
+}
+
+.modal-card .hint {
+  margin: 0 0 14px;
+  color: var(--muted);
+  font-weight: 750;
+  font-size: 13px;
+}
+
+.modal-card label {
+  display: block;
+  margin: 10px 0 8px;
+  font-weight: 900;
+  font-size: 13px;
+  color: var(--text);
+}
+
+.input-field,
+.textarea-field {
+  width: 100%;
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(15, 23, 42, 0.18);
+  padding: 12px 12px;
+  font-size: 14px;
+  background: #ffffff;
+}
+
+.input-field:focus,
+.textarea-field:focus {
+  outline: none;
+  border-color: rgba(41, 119, 167, 0.65);
+  box-shadow: 0 0 0 4px rgba(41, 119, 167, 0.18);
+}
+
+.textarea-field {
+  min-height: 110px;
+  resize: vertical;
+}
+
+.validation {
+  margin-top: 8px;
+  padding: 10px 12px;
+  border-radius: var(--radius-md);
+  background: rgba(220, 38, 38, 0.10);
+  border: 1px solid rgba(220, 38, 38, 0.18);
+  color: #7f1d1d;
+  font-weight: 800;
+  font-size: 12px;
+}
+
+.submit-btn,
+.close-btn {
+  width: 100%;
+  border: none;
+  border-radius: var(--radius-md);
+  padding: 12px 14px;
+  cursor: pointer;
+  font-weight: 950;
+  font-size: 14px;
+  margin-top: 12px;
+  transition: transform .08s ease, filter .2s ease, opacity .2s ease;
+}
+
+.submit-btn {
+  color: #fff;
+  background: linear-gradient(135deg, var(--primary), var(--primary-2));
+  box-shadow: 0 14px 24px rgba(41, 119, 167, 0.18);
+}
+
+.submit-btn:hover { transform: translateY(-1px); }
+.submit-btn:disabled {
+  opacity: 0.6;
+  cursor: default;
+  pointer-events: none;
+}
+
+.close-btn {
+  background: #f1f5f9;
+  color: var(--text);
+  border: 1px solid rgba(15, 23, 42, 0.12);
+}
+
+.close-btn:hover { transform: translateY(-1px); }
+.close-btn:active,
+.submit-btn:active { transform: translateY(0px); }
+
+/* =========================================================
+   Responsive
+   ========================================================= */
+@media (max-width: 980px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+  .side-col .sticky {
+    position: static;
+    top: auto;
+  }
+}
+
+@media (max-width: 720px) {
+  .hero-img {
+    height: 320px;
+  }
+
+  .header-modern {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .head-right {
+    text-align: left;
+    min-width: 0;
+  }
+
+  .details-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-badges {
+    left: 18px;
+    bottom: 16px;
+  }
+}
+
+@media (max-width: 420px) {
+  .hero-img {
+    height: 260px;
+  }
+
+  .head-left .title {
+    font-size: 24px;
+  }
+
+  .prezzo-modern {
+    font-size: 22px;
+  }
+}
+
+/* Overlay già ok: lo lasciamo */
+.overlay{
+  position: fixed;
+  inset: 0;
+  background: rgba(2, 6, 23, 0.55);
+  backdrop-filter: blur(7px);
+  z-index: 50;
+}
+
+/* ===== Modal premium ===== */
+.modal-card--modern{
+  position: fixed;
+  z-index: 60;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+
+  width: min(560px, calc(100% - 32px));
+  border-radius: 22px;
+  padding: 18px;
+
+  background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(255,255,255,0.92));
+  border: 1px solid rgba(15, 23, 42, 0.12);
+  box-shadow: 0 34px 90px rgba(2, 6, 23, 0.35);
+
+  animation: modalIn .18s ease-out;
+}
+
+@keyframes modalIn{
+  from { opacity: 0; transform: translate(-50%, -47%) scale(0.99); }
+  to   { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+}
+
+/* Header */
+.modal-head{
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.modal-title{
+  margin: 0;
+  font-size: 20px;
+  font-weight: 950;
+  letter-spacing: -0.2px;
+  color: var(--text);
+}
+
+.modal-sub{
+  margin: 6px 0 0;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--muted);
+}
+
+.modal-close{
+  width: 40px;
+  height: 40px;
+  border-radius: 14px;
+  border: 1px solid rgba(15, 23, 42, 0.12);
+  background: rgba(241, 245, 249, 0.9);
+  cursor: pointer;
+  font-weight: 950;
+  transition: transform .12s ease, filter .12s ease;
+}
+
+.modal-close:hover{ transform: translateY(-1px); filter: brightness(.98); }
+
+/* Pill prezzo minimo */
+.modal-pill{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+
+  padding: 12px 14px;
+  border-radius: 16px;
+
+  background: rgba(41, 119, 167, 0.10);
+  border: 1px solid rgba(41, 119, 167, 0.18);
+  color: var(--text);
+
+  font-weight: 850;
+  margin-bottom: 14px;
+}
+
+.modal-pill span{
+  font-size: 13px;
+  color: var(--muted);
+  font-weight: 800;
+}
+
+.modal-pill strong{
+  font-size: 14px;
+  font-weight: 950;
+}
+
+/* Form */
+.modal-form{
+  display: grid;
+  gap: 14px;
+}
+
+.field label{
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 900;
+  font-size: 13px;
+  color: var(--text);
+}
+
+.input-wrap{
+  position: relative;
+}
+
+.input-icon{
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-weight: 950;
+  color: rgba(15, 23, 42, 0.55);
+  pointer-events: none;
+}
+
+.modal-form input,
+.modal-form textarea{
+  width: 100%;
+  border-radius: 16px;
+  border: 1px solid rgba(15, 23, 42, 0.16);
+  background: #ffffff;
+  padding: 12px 12px;
+  font-size: 14px;
+  font-weight: 700;
+  transition: border-color .15s ease, box-shadow .15s ease;
+}
+
+.modal-form input{
+  padding-left: 34px; /* spazio per € */
+}
+
+.modal-form textarea{
+  resize: vertical;
+  min-height: 120px;
+}
+
+.modal-form input:focus,
+.modal-form textarea:focus{
+  outline: none;
+  border-color: rgba(41, 119, 167, 0.55);
+  box-shadow: 0 0 0 4px rgba(41, 119, 167, 0.16);
+}
+
+.is-invalid{
+  border-color: rgba(220, 38, 38, 0.55) !important;
+  box-shadow: 0 0 0 4px rgba(220, 38, 38, 0.12) !important;
+}
+
+.error{
+  display: block;
+  margin-top: 8px;
+  padding: 10px 12px;
+  border-radius: 14px;
+  background: rgba(220, 38, 38, 0.10);
+  border: 1px solid rgba(220, 38, 38, 0.18);
+  color: #7f1d1d;
+  font-weight: 850;
+  font-size: 12px;
+}
+
+.field-hint{
+  margin-top: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  color: rgba(71, 85, 105, 0.95);
+}
+
+/* Actions */
+.modal-actions{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.modal-actions .btn{
+  border: none;
+  border-radius: 16px;
+  padding: 12px 14px;
+  cursor: pointer;
+  font-weight: 950;
+  font-size: 14px;
+  transition: transform .10s ease, filter .15s ease, opacity .15s ease;
+}
+
+.modal-actions .btn:hover{ transform: translateY(-1px); filter: brightness(.98); }
+.modal-actions .btn:active{ transform: translateY(0); }
+.modal-actions .btn:disabled{ opacity: .6; cursor: default; pointer-events: none; }
+
+.modal-actions .btn.primary{
+  color: #fff;
+  background: linear-gradient(135deg, var(--primary), var(--primary-2));
+  box-shadow: 0 14px 24px rgba(41, 119, 167, 0.20);
+}
+
+.modal-actions .btn.ghost{
+  background: rgba(241, 245, 249, 0.95);
+  color: var(--text);
+  border: 1px solid rgba(15, 23, 42, 0.12);
+}
+
+/* Mobile: bottoni full width */
+@media (max-width: 520px){
+  .modal-card--modern{
+    padding: 16px;
+    border-radius: 18px;
+  }
+  .modal-actions{
+    grid-template-columns: 1fr;
+  }
+}
+
+
+/* =========================
+   HERO CAROUSEL
+========================= */
+.hero-carousel {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Pulsanti frecce */
+.carousel-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+
+  /* look moderno */
+  background: rgba(15, 35, 60, 0.55);
+  color: #fff;
+  font-size: 26px;
+  font-weight: 300;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  backdrop-filter: blur(6px);
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.35);
+
+  transition:
+    background 0.25s ease,
+    transform 0.2s ease,
+    box-shadow 0.25s ease;
+  z-index: 5;
+}
+
+/* Posizione */
+.carousel-btn.left {
+  left: 16px;
+}
+
+.carousel-btn.right {
+  right: 16px;
+}
+
+/* Hover */
+.carousel-btn:hover {
+  background: rgba(30, 136, 229, 0.85); /* blu elegante */
+  transform: translateY(-50%) scale(1.08);
+  box-shadow: 0 12px 32px rgba(30, 136, 229, 0.45);
+}
+
+/* Active (click) */
+.carousel-btn:active {
+  transform: translateY(-50%) scale(0.96);
+}
+
+/* Mobile: pulsanti più piccoli */
+@media (max-width: 768px) {
+  .carousel-btn {
+    width: 36px;
+    height: 36px;
+    font-size: 22px;
+  }
+}
+

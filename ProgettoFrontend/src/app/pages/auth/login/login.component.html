@@ -1,0 +1,132 @@
+<div class="login-page">
+  <!-- Background decor -->
+  <div class="bg-gradient"></div>
+  <div class="bg-orb orb-1"></div>
+  <div class="bg-orb orb-2"></div>
+
+  <div class="auth-shell">
+    <!-- Brand panel -->
+    <aside class="brand-panel">
+      <div class="brand-top">
+        <div class="pill">Immobiliare • DietiEstate25</div>
+        <h1 class="brand-title">
+          Trova la casa giusta,<br />
+          in modo semplice.
+        </h1>
+        <p class="brand-subtitle">
+          Accedi per visualizzare inserzioni e gestire preferiti e proposte in un’unica piattaforma.
+        </p>
+      </div>
+
+      <div class="brand-features">
+        <div class="feature">
+          <span class="dot"></span>
+          <div>
+            <div class="feature-title">Ricerca rapida</div>
+            <div class="feature-text">Filtri intelligenti e risultati chiari.</div>
+          </div>
+        </div>
+
+        <div class="feature">
+          <span class="dot"></span>
+          <div>
+            <div class="feature-title">Proposte & controproposte</div>
+            <div class="feature-text">Gestisci trattative in modo ordinato.</div>
+          </div>
+        </div>
+
+        <div class="feature">
+          <span class="dot"></span>
+          <div>
+            <div class="feature-title">Accesso sicuro</div>
+            <div class="feature-text">JWT + OAuth2 per un login affidabile.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="brand-footer">
+        <div class="mini-card">
+          <div class="mini-kpi">+ modern UI</div>
+          <div class="mini-text">Micro-animazioni e layout responsive.</div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Login card  -->
+    <section class="login-wrap">
+      <form class="login-card" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        <header class="login-head">
+          <h2>Accedi</h2>
+          <p class="subtitle">Bentornato su <span class="brand">DietiEstate25</span></p>
+        </header>
+
+        <div class="field">
+          <label class="label">Email</label>
+          <input
+            type="email"
+            placeholder="Email"
+            formControlName="mail"
+            autocomplete="email"
+          />
+          @if(loginForm.get('mail')?.invalid && loginForm.get('mail')?.touched){
+            <div class="error">Email non valida</div>
+          }
+        </div>
+
+        <div class="field">
+          <label class="label">Password</label>
+          <input
+            type="password"
+            placeholder="Password"
+            formControlName="password"
+            autocomplete="current-password"
+          />
+          @if(loginForm.get('password')?.invalid && loginForm.get('password')?.touched){
+            <div class="error">Inserisci la password</div>
+          }
+        </div>
+
+        <button class="btn-primary" type="submit" [disabled]="loginForm.invalid">
+          Login
+        </button>
+
+        <button class="link-btn" type="button" (click)="openForgotPassword()">
+          Ho dimenticato la password?
+        </button>
+
+        <div class="separator">
+          <span>oppure</span>
+        </div>
+
+        <!-- OAuth Providers  -->
+        <div class="providers">
+          <div class="social-login-row">
+            <button class="social-btn" type="button" (click)="loginWith('google')">
+              <img
+                ngSrc="https://storage.googleapis.com/database-dietiestate25/assets/google.jpg"
+                alt="Accedi con Google"
+                width="24"
+                height="24"
+              />
+            </button>
+
+
+            <button class="social-btn" type="button" (click)="loginWith('github')">
+              <img
+                ngSrc="https://storage.googleapis.com/database-dietiestate25/assets/github.png"
+                alt="Accedi con GitHub"
+                width="24"
+                height="24"
+              />
+            </button>
+          </div>
+        </div>
+
+        <p class="register-link">
+          Non hai un account?
+          <a routerLink="/register">Registrati</a>
+        </p>
+      </form>
+    </section>
+  </div>
+</div>

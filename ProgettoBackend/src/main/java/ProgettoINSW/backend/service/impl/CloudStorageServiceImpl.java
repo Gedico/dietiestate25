@@ -1,0 +1,58 @@
+package ProgettoINSW.backend.service.impl;
+
+import ProgettoINSW.backend.service.CloudStorageService;
+import com.google.auth.oauth2.GoogleCredentials;
+import com.google.cloud.storage.*;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+
+@Service
+public class CloudStorageServiceImpl implements CloudStorageService {
+
+    private final String bucketName = "database-dietiestate25"; // <-- usa il tuo bucket
+
+    private final Storage storage;
+
+    public CloudStorageServiceImpl() throws IOException {
+        this.storage = StorageOptions.newBuilder()
+                .setCredentials(
+                        GoogleCredentials.fromStream(
+                                getClass().getClassLoader().getResourceAsStream(
+                                        "gcp/dietiestate25-storage.json"
+                                )
+                        )
+                )
+                .build()
+                .getService();
+    }
+
+    @Override
+    public String uploadFile(MultipartFile file, String objectName) throws IOException {
+
+        BlobId blobId = BlobId.of(bucketName, objectName);
+        BlobInfo blobInfo = BlobInfo.newBuilder(blobId)
+                .setContentType(file.getContentType())
+                .build();
+
+        storage.create(blobInfo, file.getBytes());
+
+        return "https://storage.googleapis.com/" + bucketName + "/" + objectName;
+    }
+
+
+    @Override
+    public String getPublicUrl(String filename) {
+        return "https://storage.googleapis.com/" + bucketName + "/inserzioni/" + filename;
+    }
+
+
+    public void deleteFile(String url) {
+        // logica per rimuovere l'oggetto dal bucket GCS
+    }
+
+
+
+}
+

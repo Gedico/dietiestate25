@@ -1,0 +1,374 @@
+@if (caricamento) {
+  <div class="loading">Caricamento inserzione...</div>
+}
+
+@if (!caricamento && inserzione) {
+
+  <div class="listing-page">
+
+    <!-- HERO FOTO -->
+    @if (inserzione.foto.length) {
+      <section class="hero">
+        <div class="hero-media">
+          <div class="hero-carousel">
+
+            <button
+              class="carousel-btn left"
+              (click)="prevFoto()"
+              aria-label="Foto precedente">
+              ‹
+            </button>
+
+            <img
+              class="hero-img"
+              [src]="inserzione.foto[indiceFotoCorrente].url"
+              alt="Foto inserzione"
+            />
+
+            <button
+              class="carousel-btn right"
+              (click)="nextFoto()"
+              aria-label="Foto successiva">
+              ›
+            </button>
+
+            <!-- Indicatori -->
+            <div class="carousel-dots">
+              @for (f of inserzione.foto; track i; let i = $index) {
+                <span
+                  class="dot"
+                  [class.active]="i === indiceFotoCorrente"
+                  (click)="vaiAFoto(i)">
+                </span>
+              }
+
+
+            </div>
+
+          </div>
+
+
+          <!-- Badge -->
+          <div class="hero-badges">
+            @if (inserzione.dati.classeEnergetica) {
+              <span class="badge">Classe {{ inserzione.dati.classeEnergetica }}</span>
+            }
+
+            <!-- ascensore: controllo null/undefined compatto -->
+            @if (inserzione.dati.ascensore != null) {
+              <span class="badge badge-soft">
+                {{ inserzione.dati.ascensore ? 'Ascensore' : 'No ascensore' }}
+              </span>
+            }
+          </div>
+        </div>
+      </section>
+    }
+
+    <div class="container-inserzione">
+
+      <!-- HEADER -->
+      @if (inserzione.dati) {
+        <header class="header header-modern">
+          <div class="head-left">
+            <h1 class="title">{{ inserzione.dati.titolo }}</h1>
+
+            @if (inserzione.posizione.indirizzo) {
+              <p class="location">
+                <span class="dot"></span>
+                {{ inserzione.posizione.indirizzo }}
+              </p>
+            }
+
+            <div class="chips">
+              @if (inserzione.dati.dimensioni) {
+                <span class="chip">{{ inserzione.dati.dimensioni }} m²</span>
+              }
+              @if (inserzione.dati.numeroStanze) {
+                <span class="chip">{{ inserzione.dati.numeroStanze }} stanze</span>
+              }
+              @if (inserzione.dati.piano != null) {
+                <span class="chip">Piano {{ inserzione.dati.piano }}</span>
+              }
+            </div>
+          </div>
+
+          <div class="head-right">
+            <div class="prezzo-dettaglio prezzo-modern">
+              {{ inserzione.dati.prezzo | currency:'EUR':'symbol':'1.0-0' }}
+            </div>
+
+            @if (isUtenteRole && haTrattativaInCorso) {
+              <p class="hint-trattativa">
+                Hai già una trattativa in corso per questa inserzione.
+              </p>
+            }
+          </div>
+        </header>
+      }
+
+      <!-- GRID -->
+      <div class="layout">
+
+        <!-- COLONNA SINISTRA -->
+        <main class="main-col">
+
+          <!-- CONTROPROPOSTA -->
+          @if (contropropostaAgente && contropropostaAgente.stato === 'CONTROPROPOSTA') {
+            <div class="alert-controproposta">
+              <div class="alert-header">
+                <span class="icon">📩</span>
+                <h3>Controproposta dell’agente</h3>
+              </div>
+
+              <p class="alert-text">
+                Importo:
+                <b>{{ contropropostaAgente.importo | currency:'EUR':'symbol':'1.0-0' }}</b>
+              </p>
+
+              @if (contropropostaAgente.messaggio) {
+                <p class="alert-note">
+                  <strong>Nota:</strong><br />
+                  {{ contropropostaAgente.messaggio }}
+                </p>
+              }
+
+              <div class="alert-actions">
+                <button class="btn-accetta" (click)="accettaControproposta()">✔ Accetta</button>
+                <button class="btn-rifiuta" (click)="rifiutaControproposta()">✖ Rifiuta</button>
+              </div>
+
+              <p class="alert-reminder">
+                Rispondi alla controproposta per proseguire la trattativa.
+              </p>
+            </div>
+          }
+
+          <!-- DETTAGLI -->
+          @if (inserzione.dati) {
+            <section class="section-card">
+              <div class="section-head">
+                <h3>Dettagli</h3>
+              </div>
+
+              <div class="details-grid">
+                <div class="detail-row">
+                  <span class="k">Superficie</span>
+                  <span class="v">{{ inserzione.dati.dimensioni }} m²</span>
+                </div>
+
+                <div class="detail-row">
+                  <span class="k">Stanze</span>
+                  <span class="v">{{ inserzione.dati.numeroStanze }}</span>
+                </div>
+
+                <div class="detail-row">
+                  <span class="k">Piano</span>
+                  <span class="v">{{ inserzione.dati.piano }}</span>
+                </div>
+
+                <div class="detail-row">
+                  <span class="k">Ascensore</span>
+                  <span class="v">{{ inserzione.dati.ascensore ? 'Sì' : 'No' }}</span>
+                </div>
+
+                <div class="detail-row">
+                  <span class="k">Classe energetica</span>
+                  <span class="v">{{ inserzione.dati.classeEnergetica }}</span>
+                </div>
+              </div>
+            </section>
+          }
+
+          <!-- DESCRIZIONE -->
+          @if (inserzione.dati) {
+            <section class="section-card">
+              <div class="section-head">
+                <h3>Descrizione</h3>
+              </div>
+              <p class="desc">
+                {{ inserzione.dati.descrizione }}
+              </p>
+            </section>
+          }
+
+          <!-- INDICATORI -->
+          @if (inserzione.indicatore) {
+            <section class="section-card">
+              <div class="section-head">
+                <h3>Servizi nelle vicinanze</h3>
+              </div>
+
+              <div class="nearby">
+                <div class="near-item">
+                  <span>🏫 Scuole</span>
+                  <strong>{{ inserzione.indicatore.scuoleVicine ? 'Sì' : 'No' }}</strong>
+                </div>
+
+                <div class="near-item">
+                  <span>🌳 Parchi</span>
+                  <strong>{{ inserzione.indicatore.parchiVicini ? 'Sì' : 'No' }}</strong>
+                </div>
+
+                <div class="near-item">
+                  <span>🚉 Mezzi pubblici</span>
+                  <strong>{{ inserzione.indicatore.mezziPubbliciVicini ? 'Sì' : 'No' }}</strong>
+                </div>
+              </div>
+            </section>
+          }
+
+          <!-- POSIZIONE -->
+          @if (inserzione.posizione) {
+            <section class="section-card">
+              <div class="section-head">
+                <h3>Posizione</h3>
+              </div>
+              <p class="address">{{ inserzione.posizione.indirizzo }}</p>
+
+              @if (mappaUrl) {
+                <iframe [src]="mappaUrl" loading="lazy"></iframe>
+              }
+            </section>
+          }
+
+        </main>
+
+        <!-- COLONNA DESTRA -->
+        <aside class="side-col">
+          <div class="sticky">
+            @if (isUtenteRole || isAgenteRole || !isLogged) {
+              <section class="side-card">
+                <h3 class="side-title">
+                  @if (isAgenteRole) { Gestione offerta } @else { Invia una proposta }
+                </h3>
+
+                <!-- UTENTE -->
+                @if (isUtenteRole) {
+                  <p class="side-sub">
+                    Puoi inviare un’offerta all’agente. La trattativa rimane tracciata.
+                  </p>
+
+                  <button
+                    class="proposta-btn proposta-btn--full"
+                    [disabled]="haTrattativaInCorso"
+                    (click)="toggleFormOfferta()"
+                  >
+                    💶 Fai un'offerta
+                  </button>
+                }
+
+                <!-- NON LOGGATO -->
+                @if (!isLogged) {
+                  <p class="side-sub">
+                    Devi essere registrato per inviare una proposta.
+                  </p>
+
+                  <button
+                    class="proposta-btn proposta-btn--full proposta-btn--login"
+                    (click)="mostraAlertLogin()"
+                  >
+                    🔐 Accedi per fare una proposta
+                  </button>
+                }
+
+                <!-- AGENTE -->
+                @if (isAgenteRole) {
+                  <p class="side-sub">
+                    Inserisci una proposta manuale per gestire trattative offline.
+                  </p>
+
+                  <button
+                    class="proposta-btn manuale proposta-btn--full"
+                    (click)="vaiAPropostaManuale()"
+                  >
+                    📝 Inserisci offerta manuale
+                  </button>
+                }
+
+                @if (haTrattativaInCorso && isUtenteRole) {
+                  <p class="hint-trattativa hint-trattativa--box">
+                    Hai già una trattativa in corso per questa inserzione.
+                  </p>
+                }
+              </section>
+            }
+
+          </div>
+        </aside>
+      </div>
+    </div>
+
+    <!-- MODAL OFFERTA -->
+    @if (mostraFormOfferta && !haTrattativaInCorso) {
+      <div class="overlay" (click)="chiudiFormOfferta()"></div>
+
+      <section class="modal-card modal-card--modern" (click)="$event.stopPropagation()" role="dialog" aria-modal="true">
+        <header class="modal-head">
+          <div class="modal-head-left">
+            <h2 class="modal-title">Invia una proposta</h2>
+            <p class="modal-sub">Inserisci l’importo e un messaggio per l’agente</p>
+          </div>
+
+          <button type="button" class="modal-close" aria-label="Chiudi" (click)="chiudiFormOfferta()">
+            ✕
+          </button>
+        </header>
+
+        <div class="modal-pill">
+          <span>Prezzo minimo accettato</span>
+          <strong>{{ prezzoMinimo | currency:'EUR':'symbol':'1.0-0' }}</strong>
+        </div>
+
+        <form class="modal-form" [formGroup]="offertaForm" (ngSubmit)="inviaProposta()">
+          <div class="field">
+            <label>Importo offerto (€)</label>
+
+            <div class="input-wrap">
+              <span class="input-icon">€</span>
+              <input
+                type="text"
+                formControlName="prezzoProposta"
+                appCurrencyInput
+                placeholder="Es. 120.000"
+                [class.is-invalid]="prezzoProposta?.touched && prezzoProposta?.invalid"
+              />
+            </div>
+
+            @if (prezzoProposta?.touched && prezzoProposta?.invalid) {
+              <small class="error">
+                @if (prezzoProposta?.errors?.['required']) { L'importo è obbligatorio. }
+                @if (prezzoProposta?.errors?.['min']) {
+                  Deve essere almeno {{ prezzoMinimo | currency:'EUR':'symbol':'1.0-0' }}.
+                }
+              </small>
+            }
+          </div>
+
+          <div class="field">
+            <label>Messaggio (opzionale)</label>
+            <textarea
+              rows="4"
+              formControlName="note"
+              placeholder="Scrivi un messaggio per l’agente…"
+            ></textarea>
+            <div class="field-hint">Max 500 caratteri</div>
+          </div>
+
+          <footer class="modal-actions">
+            <button type="button" class="btn ghost" (click)="chiudiFormOfferta()" [disabled]="invioInCorso">
+              Annulla
+            </button>
+
+            <button type="submit" class="btn primary" [disabled]="offertaForm.invalid || invioInCorso">
+              @if (invioInCorso) { Invio in corso… } @else { Invia proposta }
+            </button>
+          </footer>
+        </form>
+      </section>
+    }
+
+
+
+  </div>
+}

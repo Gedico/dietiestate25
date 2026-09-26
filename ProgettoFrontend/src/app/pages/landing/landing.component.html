@@ -1,0 +1,43 @@
+<section class="hero">
+  <div class="overlay"></div>
+
+  <div class="hero-content">
+    <div class="badge-container">
+      <span class="hero-badge">Esplora le novità 2026</span>
+    </div>
+
+    <h1>Trova la tua prossima <span>casa</span></h1>
+    <p>
+      Semplifichiamo la tua ricerca immobiliare con annunci verificati
+      e una navigazione pensata per le tue esigenze.
+    </p>
+
+    <div class="search-wrapper">
+      <app-search-bar></app-search-bar>
+    </div>
+  </div>
+
+  <div class="scroll-down">
+    <div class="mouse"></div>
+  </div>
+</section>
+
+<section class="ultime-inserzioni">
+  <div class="container">
+    <div class="section-header">
+      <div class="title-box">
+        <span class="subtitle">Recenti</span>
+        <h2>Ultime inserzioni caricate</h2>
+      </div>
+    </div>
+
+    <div class="grid-inserzioni">
+      <app-inserzione-card
+        *ngFor="let inserzione of ultime"
+        [inserzione]="inserzione"
+        class="card-animate">
+      </app-inserzione-card>
+    </div>
+  </div>
+</section>
+

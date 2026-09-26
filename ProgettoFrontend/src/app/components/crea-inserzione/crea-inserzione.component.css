@@ -1,0 +1,37 @@
+/* Layout generale */
+.crea-inserzione-layout {
+  display: grid;
+  grid-template-columns: 88px 1fr; /* colonna progress stretta */
+  min-height: calc(100vh - 70px); /* navbar */
+  overflow: hidden;
+  padding-top: 70px;
+  grid-template-rows: 1fr; 
+ background-image: url('https://storage.googleapis.com/database-dietiestate25/assets/sfondo%20mappa%20gpt.png');
+  
+}
+
+
+/* Colonna progress */
+.progress-wrapper {
+  position: sticky;
+  top: 70px; /* altezza navbar */
+  display: flex;
+  justify-content: center;
+  border-right: 1px solid #e5e7eb;
+}
+
+
+/* Colonna contenuto */
+.step-content {
+  padding: 40px 50px;
+  background: transparent; /* eredita dal layout */
+  min-height: calc(100vh - 80px);
+  height: 100%;
+  overflow-y: auto;
+}
+
+
+
+
+
+

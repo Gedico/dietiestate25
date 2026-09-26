@@ -1,0 +1,209 @@
+============================================================
+        LINEE GUIDA PER LO SVILUPPO BACKEND - DietiEstate25
+============================================================
+
+OBIETTIVO
+---------
+Lo sviluppo del backend seguirà un approccio IBRIDO e FUNZIONALE,
+che combina ordine architetturale e sviluppo guidato dalle API.
+L’obiettivo è mantenere chiarezza, scalabilità e allineamento
+continuo con il frontend (Angular).
+
+
+STRUTTURA GENERALE DEL PROGETTO
+-------------------------------
+Il backend è organizzato in una classica architettura a tre livelli:
+
+    controller/    -> gestione delle richieste HTTP (API)
+    service/       -> logica applicativa
+           /impl   -> implementazione della logica
+    repository/    -> accesso al database tramite JPA
+    model/         -> entità e relazioni
+    dto/           -> oggetti di trasferimento dati (request/response)
+    security/      -> gestione JWT e autenticazione
+    exception/     -> gestione centralizzata degli errori
+    util/          -> Gestione degli oggetti
+    config/        -> Configurazioni per security
+
+Ogni funzionalità (es. gestione account, inserzioni, proposte)
+avrà il proprio set completo di componenti nei vari strati.
+
+
+FASE 1 — STRUTTURA BASE DEL PROGETTO
+------------------------------------
+Creare una base solida e coerente:
+  - Tutte le entità principali con relazioni e vincoli
+  - Le repository vuote (extends JpaRepository)
+  - Definizione della struttura dei package (vedi sopra)
+  - Configurazione del file application.yml con connessione al DB AWS
+
+Questa fase serve per costruire lo scheletro tecnico del backend.
+
+
+FASE 2 — DEFINIZIONE DEGLI USE CASE / API
+-----------------------------------------
+In questa fase si elencano tutti i casi d’uso principali (use case)
+e i relativi endpoint REST che dovranno essere implementati.
+
+Per ogni API è indicato:
+    - Endpoint HTTP
+    - Metodo
+    - Descrizione della funzionalità
+    - Necessità di autenticazione (Auth)
+    - Ruolo richiesto (Utente / Agente / Admin)
+
+----------------------------------------------------------------------------------------------------------
+ ACCOUNT E AUTENTICAZIONE
+----------------------------------------------------------------------------------------------------------
+    /api/auth/registerAgente      POST    Registra un nuovo Agente                   SI     Admin   ✅✅
+    /api/auth/registerAdmin       POST    Registra un nuovo Admin                    SI     Admin   ✅
+    /api/auth/registerUtente      POST    Registra un nuovo utente                   NO     Tutti   ✅✅
+    /api/auth/login               POST    Effettua il login e restituisce token JWT  NO     Tutti   ✅✅
+    /api/auth/loginGoogle         POST    Effettua il login e restituisce token JWT  NO     Tutti   ✅✅
+    /api/auth/loginGithub         POST    Effettua il login e restituisce token JWT  NO     Tutti   ✅✅
+    /api/auth/loginFacebook       POST    Effettua il login e restituisce token JWT  NO     Tutti   ✅✅
+    /api/auth/logout              POST    Effettua il logout dell’utente             SI     Tutti   ✅✅
+    /api/auth/recuperaPassword    POST    Invia email per recupero password          NO     Tutti   dopo frontnd
+----------------------------------------------------------------------------------------------------------
+    /profilo/me                   GET     Restituisce i dati del profilo             SI     Tutti   ✅
+    /profilo/update               PUT     Cambiare password o nome profilo           SI     Tutti   ✅
+
+
+----------------------------------------------------------------------------------------------------------
+ INSERZIONI IMMOBILIARI
+----------------------------------------------------------------------------------------------------------
+    /api/inserzioni               GET     Mostra tutte le inserzioni                 NO     Tutti   ✅
+    //ricerca                     GET     Ricerca e filtra le inserzioni             NO     Tutti   ✅
+    //{id}                        GET     Mostra dettagli singola inserzione         NO     Tutti   ✅
+----------------------------------------------------------------------------------------------------------
+    //crea                        POST    Crea una nuova inserzione immobiliare      SI     Agente  ✅
+    //modifica/{id}               PUT     Modifica un’inserzione esistente           SI     Agente  ✅
+    //elimina/{id}                DELETE  Elimina un’inserzione                      SI     Agente  ✅
+    //caricaFoto/{id}             POST    Aggiunge immagini all’inserzione           SI     Agente  ✅
+    //eliminafoto/{id}            POST    Elimina immagini all’inserzione            SI     Agente  ✅
+    //modificaStato/{id}          PUT     Modifica lo stato dell'inserzione          SI     Agente  ✅
+
+    implementare e capire le eccezioni personalizzate                                               ✅
+git
+    con {//} indico che il pattern precedente è /api/inserzione
+
+----------------------------------------------------------------------------------------------------------
+ PROPOSTE DI ACQUISTO / CONTATTO
+----------------------------------------------------------------------------------------------------------
+    /api/proposte                 GET     Elenca tutte le proposte ricevute          SI     Agente  ✅
+    //stato                       GET     Visualizza le proposte in base allo stato  SI     Agente  ✅
+    /api/proposte                 POST    Invia una proposta per un’inserzione       SI     Utente  ✅
+    //{id}                        GET     Mostra i dettagli di una proposta          SI     Agente  ✅
+    //aggiorna/{id}               PUT     Aggiorna stato proposta (acc/rif)          SI     Agente  ✅
+    //elimina/{id}                DELETE  Elimina una proposta                       SI     utente  ✅
+
+    con {//} indico che il pattern precedente è /api/proposte
+
+----------------------------------------------------------------------------------------------------------
+ INDICATORI DI PROSSIMITÀ
+----------------------------------------------------------------------------------------------------------
+    /api/indicatori               POST    Crea un indicatore di prossimità           SI     Admin
+    /api/indicatori               GET     Restituisce tutti gli indicatori           NO     Tutti
+    /api/indicatori/{id}          GET     Dettagli di un indicatore                  NO     Tutti
+    /api/indicatori/{id}          PUT     Modifica un indicatore                     SI     Admin
+    /api/indicatori/{id}          DELETE  Elimina un indicatore                      SI     Admin
+    /api/inserzioni/{id}/prox     GET     Restituisce indicatori vicini              NO     Tutti
+
+----------------------------------------------------------------------------------------------------------
+ AMMINISTRAZIONE E STATISTICHE
+----------------------------------------------------------------------------------------------------------
+    /api/admin/utenti             GET     Elenca tutti gli utenti registrati         SI     Admin
+    /api/admin/inserzioni         GET     Elenca tutte le inserzioni del sistema     SI     Admin
+    /api/admin/statistiche        GET     Ritorna dati aggregati (n. utenti, n. inserzioni, ecc.) SI Admin
+
+
+Questa tabella fungerà da roadmap di sviluppo e da riferimento
+per il frontend.
+
+
+FASE 3 — SVILUPPO PER FUNZIONALITÀ (API-DRIVEN)
+-----------------------------------------------
+Le funzionalità vengono implementate UNA ALLA VOLTA, partendo
+dalle API definite.
+
+Per ogni API:
+  1. Creare o aggiornare il Controller (endpoint REST)
+  2. Implementare il Service con la logica di business
+  3. Aggiungere i metodi necessari nella Repository (solo se servono)
+  4. Verificare l’API con Postman
+  5. Documentare nel file README_API.txt cosa fa e i parametri richiesti
+
+Ordine suggerito di sviluppo:
+  1. Registrazione utente
+  2. Login e JWT
+  3. Creazione e visualizzazione inserzioni
+  4. Proposte immobiliari
+  5. Gestione ruoli e permessi
+
+
+PRINCIPI GUIDA
+--------------
+- MODULARITÀ: ogni API deve funzionare indipendentemente dalle altre.
+- PULIZIA DEL CODICE: la logica va nei Service, non nei Controller.
+- TEST INCREMENTALE: ogni endpoint va testato singolarmente con Postman.
+- ALLINEAMENTO FRONTEND-BACKEND: ogni nuova API deve essere comunicata
+  al team frontend per l’integrazione.
+- GESTIONE ERRORI UNIFICATA: usare @ControllerAdvice per gestire le
+  eccezioni e restituire messaggi di errore coerenti.
+
+
+RIASSUNTO OPERATIVO
+-------------------
+    Step 1  -> Creare entità, repository e struttura base        (Strutturale)
+    Step 2  -> Definire tutte le chiamate API del progetto       (Analitico)
+    Step 3  -> Implementare API una alla volta                   (Funzionale)
+    Step 4  -> Test e documentazione di ogni endpoint            (Qualità)
+    Step 5  -> Integrazione progressiva con Angular              (Iterativo)
+
+
+NOTE FINALI
+Questo metodo consente di mantenere ordine e coerenza,
+senza perdere la visione d’insieme dell’applicazione.
+Ogni fase deve produrre un risultato funzionante e testabile.
+-***********************************************************************************************-
+DA LEGGERE:
+
+1) LOGIN
+Il sistema deve permettere all’utente di accedere se le sue credenziali sono corrette.
+
+-DTO (Data Transfer Object):
+LoginRequest → contiene la mail e la password che l’utente inserisce.
+LoginResponse → contiene il messaggio di risposta (“login effettuato con successo”) e altri dati come ruolo e token.
+
+-Service:
+Nel metodo loginUtente() cerchiamo nel database l’account con quella mail (accountRepository.findByMailIgnoreCase()).
+Se non esiste → errore “utente non trovato”.
+Se esiste ma la password è sbagliata → errore “password errata”.
+Se tutto è corretto → ritorniamo una LoginResponse con successo.
+
+-Controller:
+Espone un endpoint /api/auth/login che riceve la richiesta da Postman o dal frontend e risponde con il risultato del login.
+ Quindi, il login verifica i dati dell’utente, confronta mail e password nel database e risponde con un messaggio di conferma o errore.
+
+
+2) ELIMINAZIONE ACCOUNT
+Aggiunta, successivamente, di cancellare un account e il relativo utente a cui si è collegato quest'ultimo.
+
+-Service:
+eliminaAccount(Long idAccount) prima controlla se l’account esiste (findById()).
+Se non esiste → lancia un errore “account non trovato”.
+Se esiste → cerca l’utente collegato e lo elimina (utenteRepository.delete()), poi elimina anche l’account.
+
+-Controller:
+Abbiamo aggiunto un endpoint DELETE /api/auth/delete/{id} che chiama il metodo del service.
+Se l’eliminazione va a buon fine → restituisce “Account eliminato con successo!”.
+
+Correzione importante:
+Ho riscritto nella classe Account i getter/setter e nome del campo id perché Spring usava il nome del metodo per riconoscere il campo primario.
+Senza questa correzione, non poteva trovare l’account nel database, dato che anche in questo caso c'era una incongruenza con i nomi dei campi.
+ti invito a provare
+------------------------
+quando ci sarà crea proposta o invia proposta, deve esserci un controllo che deve vedere se
+lo stato di un inserzione a cui si vuole fare proposta è stato gia venduto
+inoltre, bisogna anche bloccare le modifiche a quella determinata inserzione
+si dovrebbe anche aggiungere lo stato di un inserzione quando faremo inserzione response

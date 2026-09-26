@@ -1,0 +1,25 @@
+<div class="results-layout">
+
+
+
+    <!-- Lista inserzioni -->
+    <div class="results-list">
+      <app-lista-inserzioni
+        [inserzioni]="inserzioni"
+        [loading]="loading"
+        [comune]="comune">
+      </app-lista-inserzioni>
+    </div>
+
+    <!-- Mappa -->
+    <div class="results-map">
+      <app-mappa-interattiva
+        [inserzioniPreview]="markerInserzioni">
+      </app-mappa-interattiva>
+    </div>
+
+
+</div>
+
+
+

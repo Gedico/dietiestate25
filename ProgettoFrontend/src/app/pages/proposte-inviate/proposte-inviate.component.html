@@ -1,0 +1,61 @@
+<h2 class="titolo">Le mie proposte</h2>
+
+<!-- ===================== CARICAMENTO ===================== -->
+@if (caricamento) {
+  <div class="caricamento">Caricamento in corso...</div>
+}
+
+<!-- ===================== NESSUNA PROPOSTA ===================== -->
+@if (!caricamento && proposte.length === 0) {
+  <div class="vuoto">
+    <p>Non hai ancora inviato alcuna proposta.</p>
+  </div>
+}
+
+<!-- ===================== PROPOSTE ATTIVE ===================== -->
+@if (!caricamento && (controproposteAttive.length > 0 || proposteAttive.length > 0)) {
+  <h3 class="sottotitolo">Proposte attive</h3>
+
+  <!-- 🔸 CONTROPROPOSTE DA GESTIRE -->
+  @for (p of controproposteAttive; track p.idProposta) {
+    <app-proposta-card
+      [proposta]="p"
+      variant="controproposta"
+      [showActions]="true"
+      (accept)="accetta($event)"
+      (reject)="rifiuta($event)">
+    </app-proposta-card>
+  }
+
+  <!-- 🔸 PROPOSTE IN ATTESA -->
+  @for (p of proposteAttive; track p.idProposta) {
+    <app-proposta-card
+      [proposta]="p"
+      variant="attiva">
+    </app-proposta-card>
+  }
+}
+
+<!-- ===================== PROPOSTE ACCETTATE ===================== -->
+@if (!caricamento && proposteAccettate.length > 0) {
+  <h3 class="sottotitolo success">Proposte accettate</h3>
+
+  @for (p of proposteAccettate; track p.idProposta) {
+    <app-proposta-card
+      [proposta]="p"
+      variant="accettata">
+    </app-proposta-card>
+  }
+}
+
+<!-- ===================== PROPOSTE RIFIUTATE ===================== -->
+@if (!caricamento && proposteRifiutate.length > 0) {
+  <h3 class="sottotitolo muted">Proposte rifiutate</h3>
+
+  @for (p of proposteRifiutate; track p.idProposta) {
+    <app-proposta-card
+      [proposta]="p"
+      variant="rifiutata">
+    </app-proposta-card>
+  }
+}

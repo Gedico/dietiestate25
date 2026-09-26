@@ -1,0 +1,98 @@
+<div class="container">
+
+  <h1 class="titolo">
+  <span class="oro">Proposte</span>
+  <span class="blu">Ricevute</span>
+</h1>
+
+
+  <!-- Loader -->
+  @if (loading) {
+    <div class="spinner-wrapper">
+      <mat-spinner diameter="40"></mat-spinner>
+    </div>
+  }
+
+  <!-- Nessuna proposta -->
+  @if (!loading && proposte.length === 0) {
+    <p class="empty">
+      Nessuna proposta in attesa.
+    </p>
+  }
+
+  <!-- Lista proposte -->
+  @if (!loading && proposte.length > 0) {
+
+    <div class="proposte-list">
+
+      @for (p of proposte; track p.idProposta) {
+  <mat-card class="proposta-card">
+
+    <!-- Header -->
+    <mat-card-header>
+      <mat-card-title class="importo-proposta">
+        {{ p.importo | number:'1.0-0':'it' }} €
+      </mat-card-title>
+
+      <mat-card-subtitle class="prezzo-inserzione">
+        Prezzo inserzione:
+        <strong>{{ p.prezzoInserzione | number:'1.0-0':'it' }} €</strong>
+      </mat-card-subtitle>
+    </mat-card-header>
+
+    <!-- Contenuto -->
+    <mat-card-content>
+      <p class="inserzione">
+        Inserzione: <strong>{{ p.titoloInserzione }}</strong>
+      </p>
+
+      <p class="data">
+        Inviata il {{ p.dataCreazione | date:'dd/MM/yyyy' }}
+      </p>
+    </mat-card-content>
+
+    <!-- Azioni -->
+    <mat-card-actions>
+
+      <button
+        mat-stroked-button
+        color="primary"
+        [routerLink]="['/inserzione', p.idInserzione]">
+        <mat-icon>open_in_new</mat-icon>
+        Inserzione
+      </button>
+
+      <button
+        mat-raised-button
+        color="primary"
+        (click)="aggiornaStato(p.idProposta, StatoProposta.ACCETTATA)">
+        <mat-icon>check_circle</mat-icon>
+        Accetta
+      </button>
+
+      <button
+        mat-raised-button
+        color="warn"
+        (click)="aggiornaStato(p.idProposta, StatoProposta.RIFIUTATA)">
+        <mat-icon>cancel</mat-icon>
+        Rifiuta
+      </button>
+
+      <button
+        mat-raised-button
+        color="accent"
+        (click)="apriControproposta(p)">
+        <mat-icon>swap_horiz</mat-icon>
+        Controproposta
+      </button>
+
+    </mat-card-actions>
+
+  </mat-card>
+}
+
+
+    </div>
+  }
+
+</div>

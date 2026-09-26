@@ -1,0 +1,21 @@
+<!-- ===================== MENU UTENTE ===================== -->
+@if (role === 'UTENTE') {
+  <a routerLink="/profilo" (click)="onNavigate()">Profilo</a>
+  <a routerLink="/proposte-inviate" (click)="onNavigate()">Le mie proposte</a>
+  <a class="logout-btn" (click)="onLogout()">Logout</a>
+}
+
+<!-- ===================== MENU AGENTE ===================== -->
+@if (role === 'AGENTE') {
+  <a routerLink="/agente/profilo" (click)="onNavigate()">Profilo</a>
+  <a routerLink="/proposte-ricevute" (click)="onNavigate()">Proposte ricevute</a>
+  <a routerLink="/registro-proposte" (click)="onNavigate()">Storico proposte</a>
+  <a routerLink="/agente/inserzioni" (click)="onNavigate()">Inserzioni</a>
+  <a class="logout-btn" (click)="onLogout()">Logout</a>
+}
+
+<!-- ===================== MENU ADMIN ===================== -->
+@if (role === 'ADMIN') {
+  <a routerLink="/admin/addagente" (click)="onNavigate()">Aggiungi agente</a>
+  <a class="logout-btn" (click)="onLogout()">Logout</a>
+}

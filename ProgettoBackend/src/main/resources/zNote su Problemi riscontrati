@@ -1,0 +1,71 @@
+🔴 PROBLEMA 1: Errore in AccountRepository
+ERRORE:
+No property 'email' found for type 'Account'; Did you mean 'mail'
+CAUSA:
+
+Nel AccountRepository era presente il metodo: existsByEmailIgnoreCase(String email)
+
+Ma nell'entità Account il campo si chiama: private String mail
+
+Spring Data JPA cerca di creare query automatiche basate sul nome del metodo, ma non trovava il campo email
+
+SOLUZIONE:
+
+java
+// ❌ VECCHIO (causava errore):
+boolean existsByEmailIgnoreCase(String email);
+
+// ✅ NUOVO (corretto):
+boolean existsByMailIgnoreCase(String mail);
+
+
+🔴 PROBLEMA 2: Chiamata errata nel Service
+ERRORE: L'errore si propagava al service che chiamava il metodo sbagliato
+
+CAUSA:
+
+AccountServiceImpl chiamava ancora existsByEmailIgnoreCase dopo che l'avevamo rimosso dal repository
+
+SOLUZIONE:
+
+java
+// ❌ VECCHIO:
+if(accountRepository.existsByEmailIgnoreCase(request.getMail()))
+
+// ✅ NUOVO:
+if(accountRepository.existsByMailIgnoreCase(request.getMail()))
+
+
+🔴 PROBLEMA 3: Errore in UtenteRepository
+ERRORE:
+No property 'email' found for type 'Utente'
+CAUSA:
+
+UtenteRepository aveva: boolean existsByEmail(String email)
+
+Ma l'entità Utente non aveva il campo email - l'email era nell'entità Account tramite relazione
+
+SOLUZIONE:
+
+java
+// ❌ ELIMINATO (non serviva):
+boolean existsByEmail(String email);
+🔴 PROBLEMA 4: Errore in OffertaRepository
+ERRORE:
+
+text
+No property 'idImmobile' found for type 'Offerta'; Did you mean 'inserzione'
+CAUSA:
+
+OffertaRepository aveva: List<Offerta> findByidImmobile(Long idImmobile)
+
+Ma nell'entità Offerta c'era una relazione: private Immobile inserzione (oggetto, non ID diretto)
+
+SOLUZIONE:
+
+java
+// ❌ VECCHIO:
+List<Offerta> findByidImmobile(Long idImmobile);
+
+// ✅ NUOVO:
+List<Offerta> findByImmobileIdImmobile(Long idImmobile);

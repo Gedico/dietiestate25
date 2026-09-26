@@ -1,0 +1,67 @@
+<div class="crea-inserzione-layout">
+
+  <!-- PROGRESS BAR (diventerà verticale) -->
+  <aside class="progress-wrapper">
+    <app-progress-bar
+      [stepCorrente]="stepCorrente"
+      [totaleStep]="totaleStep">
+    </app-progress-bar>
+  </aside>
+
+  <!-- CONTENUTO STEP -->
+  <main class="step-content">
+
+    <!-- STEP 1: POSIZIONE -->
+    @if (stepCorrente === 1) {
+      <div class="section-card">
+        <app-step-posizione
+          [posizioneForm]="posizioneForm"
+          [comuniFiltrati]="comuniFiltrati"
+          (comuneChange)="onComuneInput($event)"
+          (selezionaComune)="onComuneSelezionato($event)"
+          (posizioneSelezionata)="onPosizioneSelezionata($event)"
+          (nextStep)="nextStep()">
+        </app-step-posizione>
+      </div>
+    }
+
+    <!-- STEP 2: MAPPA -->
+    @if (stepCorrente === 2) {
+      <div class="section-card">
+        <app-step-mappa
+          [posizioneForm]="posizioneForm"
+          (avanti)="nextStep()"
+          (indietro)="previousStep()">
+        </app-step-mappa>
+      </div>
+    }
+
+    <!-- STEP 3: DATI INSERZIONE -->
+    @if (stepCorrente === 3) {
+      <div class="section-card">
+        <app-step-dati-inserzione
+          [datiInserzioneForm]="datiInserzioneForm"
+          (avanti)="nextStep()"
+          (indietro)="previousStep()"
+          (prezzoInput)="onPrezzoInput($event)"
+          (prezzoBlur)="formatPrezzo()">
+        </app-step-dati-inserzione>
+      </div>
+    }
+
+    <!-- STEP 4: IMMAGINI -->
+    @if (stepCorrente === 4) {
+      <div class="section-card">
+        <app-step-immagini
+          [anteprime]="anteprime"
+          [immaginiCount]="immagini.length"
+          (fileSelezionati)="onFileSelected($event)"
+          (rimuovi)="rimuoviImmagine($event)"
+          (indietro)="previousStep()"
+          (pubblica)="submit()">
+        </app-step-immagini>
+      </div>
+    }
+
+  </main>
+</div>

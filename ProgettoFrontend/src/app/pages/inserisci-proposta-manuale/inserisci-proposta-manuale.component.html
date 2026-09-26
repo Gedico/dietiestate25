@@ -1,0 +1,72 @@
+<div class="page-wrapper">
+  <div class="container-form">
+
+    <header class="form-header">
+      <div class="icon-badge">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>
+      </div>
+      <h2>Nuova Offerta Manuale</h2>
+      <p class="subtitle">Registra un'offerta ricevuta extra-piattaforma per l'immobile <strong>#{{idInserzione}}</strong></p>
+    </header>
+
+    <form [formGroup]="form" (ngSubmit)="submit()" class="modern-form">
+
+      <div class="field-group highlight-group">
+        <label class="required">Importo della proposta</label>
+        <div class="input-wrapper price-wrapper">
+          <span class="currency-prefix">€</span>
+          <input
+            type="text"
+            class="input-field price-input"
+            formControlName="prezzoProposta"
+            appCurrencyInput
+            placeholder="0,00" />
+        </div>
+        @if (form.get('prezzoProposta')?.touched && form.get('prezzoProposta')?.invalid) {
+          <span class="error-msg">Inserisci un importo valido</span>
+        }
+      </div>
+
+      <div class="form-grid">
+        <div class="field-group">
+          <label class="required">Nome Cliente</label>
+          <input type="text" class="input-field" formControlName="nomeCliente" placeholder="es. Mario Rossi" />
+          @if (form.get('nomeCliente')?.touched && form.get('nomeCliente')?.invalid) {
+            <span class="error-msg">Nome richiesto</span>
+          }
+        </div>
+
+        <div class="field-group">
+          <label class="required">Data Ricezione</label>
+          <input type="date" class="input-field" formControlName="dataOfferta" />
+        </div>
+      </div>
+
+      <div class="field-group">
+        <label class="required">Contatto (Email o Telefono)</label>
+        <input type="text" class="input-field" formControlName="contattoCliente" placeholder="Esempio: +39 333... o email@esempio.it" />
+        @if (form.get('contattoCliente')?.touched && form.get('contattoCliente')?.invalid) {
+          <span class="error-msg">Inserisci un recapito valido</span>
+        }
+      </div>
+
+      <div class="field-group">
+        <label>Note aggiuntive <span class="optional">(opzionale)</span></label>
+        <textarea class="input-field" formControlName="note" rows="3" placeholder="Dettagli sulla trattativa..."></textarea>
+      </div>
+
+      <div class="form-actions">
+        <button type="button" class="btn-secondary" (click)="annulla()" [disabled]="isSubmitting">
+          Annulla
+        </button>
+        <button type="submit" class="btn-primary" [disabled]="form.invalid || isSubmitting">
+          @if (isSubmitting) {
+            <span class="loader"></span> Caricamento...
+          } @else {
+            Conferma e Salva
+          }
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

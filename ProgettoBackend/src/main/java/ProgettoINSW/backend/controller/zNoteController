@@ -1,0 +1,30 @@
+
+
+=============================================ACCOUNT CONTROLLER===============================================================
+
+L’AccountController gestisce tutte le operazioni di autenticazione e gestione degli account tramite endpoint REST sotto /api/auth.
+Le registrazioni sono suddivise in tre endpoint distinti (registerUtente, registerAgente, registerAdmin), ognuno dei quali invia una richiesta al servizio applicando il ruolo corretto. La logica comune è centralizzata nel metodo privato registra, che si occupa di inoltrare i dati al service e restituire una risposta HTTP 201.
+
+Il login avviene tramite l’endpoint /login, che delega l’autenticazione al servizio. L’operazione è considerata riuscita solo se la risposta contiene un token JWT; in caso contrario viene restituito un errore HTTP 401.
+Il logout riceve il token tramite header e lo invalida tramite il service.
+
+Per l’eliminazione di un account è disponibile l’endpoint DELETE /delete/{id}. La cancellazione viene eseguita dal service; se l’ID non esiste viene sollevata un’eccezione intercettata dal GlobalExceptionHandler. In caso di successo l’endpoint restituisce HTTP 204 No Content.
+
+Il controller è minimale: non contiene logica di validazione o gestione degli errori, che sono centralizzate nel livello service e nell’exception handler.
+
+
+============================================INSERZIONE CONTROLLER===========================================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
